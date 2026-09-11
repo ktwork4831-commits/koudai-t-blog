@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>記事を作成 — KOUDAI.T</title>
+  <link rel="stylesheet" href="/editor/editor.css">
+</head>
+<body>
+  <header class="editor-header">
+    <a class="brand" href="http://localhost:4173/" target="_blank" rel="noreferrer">KOUDAI<span>.</span>T <small>EDITOR</small></a>
+    <span class="local-badge">LOCAL ONLY</span>
+  </header>
+  <main class="editor-shell">
+    <div class="editor-intro">
+      <div>
+        <p class="eyebrow">NEW POST / SIMPLE WRITING FLOW</p>
+        <h1>記事を追加<span>.</span></h1>
+        <p>文章を書く。画像を追加する。プレビューして保存する。</p>
+      </div>
+      <a class="site-link" href="http://localhost:4173/" target="_blank" rel="noreferrer">サイトを開く ↗</a>
+    </div>
+
+    <form id="post-form" novalidate>
+      <div class="workspace-grid">
+        <section class="form-panel">
+          <div class="field-group title-group">
+            <label for="title">タイトル</label>
+            <input id="title" name="title" type="text" placeholder="記事のタイトル" autocomplete="off" required>
+            <div class="slug-row"><span>URL /blog/</span><output id="slug-output">post-</output><span>/</span></div>
+          </div>
+          <div class="form-row">
+            <div class="field-group"><label for="category">カテゴリー</label><input id="category" name="category" placeholder="例：ゲーム、旅行、制作メモ" required maxlength="60"></div>
+            <div class="field-group"><label for="date">投稿日</label><input id="date" name="date" type="date"></div>
+          </div>
+          <div class="field-group"><label for="tags">タグ <small>カンマ区切りで入力</small></label><input id="tags" name="tags" type="text" placeholder="DMC5, REFramework"></div>
+          <div class="field-group body-group"><div class="label-line"><label for="body">本文</label><span id="word-count">0 characters</span></div><textarea id="body" name="body" placeholder="ここに文章を書きます。Markdownを知らなくても大丈夫です。画像は下に追加すると記事の末尾へ自動挿入されます。" required></textarea></div>
+          <div class="field-group"><label>画像</label><div id="drop-zone" class="drop-zone" tabindex="0"><div class="drop-icon">＋</div><strong>画像をここへドロップ</strong><span>または</span><label class="file-button" for="image-input">ファイルを選択</label><input id="image-input" type="file" accept="image/*" multiple hidden><small>PNG / JPG / GIF / WebP　最大20枚</small></div><div id="image-list" class="image-list"></div></div>
+          <div class="save-row"><div id="save-status" class="save-status" role="status"></div><button id="save-button" class="save-button" type="submit">記事を保存してビルド <span>↗</span></button></div>
+        </section>
+        <section class="preview-panel">
+          <div class="preview-head"><div><p class="eyebrow">BEFORE PUBLISH</p><h2>プレビュー</h2></div><span class="preview-state">LIVE PREVIEW</span></div>
+          <article id="preview" class="post-preview"><div class="preview-empty"><span>PREVIEW</span><p>左側にタイトルと本文を入力すると、<br>ここに表示されます。</p></div></article>
+        </section>
+      </div>
+    </form>
+  </main>
+  <script src="/editor/editor.js"></script>
+</body>
+</html>
