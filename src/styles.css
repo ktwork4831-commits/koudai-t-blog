@@ -99,11 +99,11 @@ h2 em { color: var(--orange); font-style: normal; }
 .latest-section { padding-top: 108px; }
 
 .video-section { border-top: 1px solid var(--line); }
-.video-controls { display:flex; justify-content:flex-end; gap:10px; margin-bottom:18px; }
+.video-controls { display:none; }
 .video-controls button { width:44px; height:44px; background:transparent; border:1px solid var(--line); color:var(--text, #fff); cursor:pointer; font-size:22px; }
 .video-controls button:disabled { opacity:.3; cursor:default; }
-.video-track { display:flex; flex-flow:row nowrap; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding:8px 0 24px; scrollbar-width:thin; scrollbar-color:var(--orange) var(--surface); }
-.video-card { flex:0 0 calc((100% - 48px)/3); min-width:0; scroll-snap-align:start; background:linear-gradient(145deg,#202026,#121216); border:1px solid #34343c; border-radius:16px; overflow:hidden; box-shadow:0 8px 24px #0003; transition:border-color .2s,transform .2s; padding-bottom:22px; }
+.video-track { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; padding:8px 0 24px; }
+.video-card { min-width:0; background:linear-gradient(145deg,#202026,#121216); border:1px solid #34343c; border-radius:16px; overflow:hidden; box-shadow:0 8px 24px #0003; transition:border-color .2s,transform .2s; padding-bottom:22px; }
 .video-card:hover { border-color:var(--orange); transform:translateY(-3px); }
 .video-card:focus-within { border-color:var(--orange); }
 .video-controls button { border-radius:50%; background:var(--surface); transition:background .2s; }
@@ -115,7 +115,7 @@ h2 em { color: var(--orange); font-style: normal; }
 .video-player span { position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); color:white; background:#f60; border-radius:10px; padding:12px 22px; }
 .video-card h3 { font-size:15px; line-height:1.6; margin:18px 20px 12px; }
 .video-card time { display:block; margin:0 20px; color:var(--muted); font:11px 'DM Mono',monospace; }
-@media(max-width:800px) { .video-card { flex-basis:85%; } .video-track { gap:16px; } }
+@media(max-width:800px) { .video-track { grid-template-columns:1fr; gap:16px; } }
 .back-to-top { display:inline-flex; align-items:center; gap:16px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:24px; font-size:12px; }
 .back-to-top span { color:var(--orange); font-size:20px; }
 .back-to-top:hover { border-color:var(--orange); background:var(--surface); }
