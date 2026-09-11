@@ -27,7 +27,7 @@ const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, entry]) 
   id: entry.match(/<yt:videoId>(.*?)<\/yt:videoId>/)?.[1],
   title: decode(entry.match(/<title>([\s\S]*?)<\/title>/)?.[1] || ''),
   published: entry.match(/<published>(.*?)<\/published>/)?.[1]
-})).filter(v => /^[\w-]{11}$/.test(v.id) && v.title && v.published && regularIds.has(v.id)).sort((a,b) => b.published.localeCompare(a.published)).slice(0,15);
+})).filter(v => /^[\w-]{11}$/.test(v.id) && v.title && v.published && regularIds.has(v.id)).sort((a,b) => b.published.localeCompare(a.published)).slice(0,18);
 if (!videos.length) throw new Error('YouTube feed has no valid videos; keeping existing data');
 await fs.writeFile(target, JSON.stringify(videos, null, 2) + '\n');
 console.log('Updated YouTube videos: ' + videos.length);
