@@ -30,7 +30,7 @@ button, input { font: inherit; }
 .orb-a { width: 6px; height: 6px; right: 27%; top: 30%; } .orb-b { width: 3px; height: 3px; right: 9%; top: 65%; animation-delay: -3s; }
 @keyframes float { 50% { transform: translate(18px, -24px); opacity: .35; } }
 .hero-content { position: relative; z-index: 1; padding: 112px 0 82px; }
-.eyebrow { color: var(--orange); font: 500 10px/1.4 'DM Mono', monospace; letter-spacing: .18em; margin: 0 0 20px; }
+.eyebrow { color: var(--orange); font: 500 12px/1.4 'DM Mono', monospace; letter-spacing: .18em; margin: 0 0 20px; }
 .hero-title { font-size: clamp(78px, 15vw, 180px); line-height: .9; letter-spacing: -.1em; margin: 0; font-weight: 800; }
 .hero-foot { display: flex; justify-content: space-between; align-items: end; max-width: 520px; margin-top: 82px; }
 .hero-foot p { margin: 0; color: var(--muted); font-size: 14px; line-height: 2; }
