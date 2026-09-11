@@ -186,7 +186,6 @@ for (const post of posts) {
 const games = JSON.parse(await fs.readFile(path.join(src, 'data/games.json'), 'utf8'));
 const gameHistory = `<section class="section game-history"><div class="container">
 <div class="game-history-block"><p class="eyebrow">FAVORITES</p><h2>今までのゲームについて</h2><p class="games-intro">下記のゲームジャンルを好みます。</p><ul class="favorite-games">${games.favorites.map(name => `<li>${escapeHtml(name)}</li>`).join('')}</ul></div>
-<div class="game-history-block game-record"><p class="eyebrow">RECORD</p><h2>モンスターハンターフロンティア</h2><p class="games-intro">公式狩猟大会 韋駄天の実績</p><ul class="game-results">${games.results.map(([round, rank]) => `<li><span>第${round}回</span><strong class="${rank === 1 ? 'first-place' : ''}">${rank}<small>位</small></strong></li>`).join('')}</ul></div>
 </div></section>`;
 const aboutContent = `<section class="page-hero compact"><div class="container"><p class="eyebrow reveal">03 — ABOUT</p><h1 class="page-title reveal">ABOUT<span>.</span></h1></div></section>${gameHistory}`;
 await fs.mkdir(path.join(dist, 'about'), { recursive: true });
