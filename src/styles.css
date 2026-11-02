@@ -147,5 +147,15 @@ h2 em { color: var(--orange); font-style: normal; }
 .header-logo { width:38px; height:38px; object-fit:cover; clip-path:circle(48% at 50% 50%); flex-shrink:0; }
 @media(max-width:800px) { .header-logo { width:32px; height:32px; } .header-brand { gap:9px; } }
 @media(max-width:800px) { .container.header-inner { width: min(calc(100% - 38px), var(--max)); } }
-
 .page-title.search-page-title { font-size: clamp(28px, 4.8vw, 64px); line-height: 1.4; letter-spacing: -.04em; word-break: keep-all; overflow-wrap: anywhere; }
+.search-dialog { width: min(1100px, calc(100% - 32px)); max-height: 85dvh; padding: 28px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 16px; overflow: auto; }
+.search-dialog::backdrop { background: #000b; backdrop-filter: blur(5px); }
+.search-dialog-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.search-dialog-heading h2 { font-size: clamp(22px, 3vw, 36px); line-height: 1.5; letter-spacing: -.03em; }
+.search-dialog-close { flex-shrink: 0; padding: 10px; background: transparent; border: 1px solid var(--line); color: var(--text); cursor: pointer; border-radius: 6px; }
+.search-dialog .search-form { max-width: none; }
+.search-dialog .search-form input { min-width: 0; width: 100%; }
+.search-dialog .post-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+body.search-dialog-open { overflow: hidden; }
+@media(max-width:800px) { .search-dialog { padding: 18px; } .search-dialog .post-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media(max-width:500px) { .search-dialog .post-grid { grid-template-columns: 1fr; } .search-dialog-heading { flex-direction: column-reverse; } .search-dialog-close { align-self: flex-end; } }
