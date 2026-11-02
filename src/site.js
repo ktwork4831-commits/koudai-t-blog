@@ -17,17 +17,16 @@ if ('IntersectionObserver' in window) {
   revealItems.forEach(item => observer.observe(item));
 } else revealItems.forEach(item => item.classList.add('is-visible'));
 
-function initializeSearch(root, index) {
-const searchInput = $('[data-search-input], #search-input', root);
-const searchForm = $('[data-search-form], #search-form', root);
-const searchResults = $('[data-search-results], #search-results', root);
-const searchStatus = $('[data-search-status], #search-status', root);
-if (searchInput && searchResults && index) {
+const searchInput = $('#search-input');
+const searchForm = $('#search-form');
+const searchResults = $('#search-results');
+const searchStatus = $('#search-status');
+if (searchInput && searchResults && window.KOUDAI_SEARCH_INDEX) {
   const escapeSearch = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const normalizeSearch = value => String(value).normalize('NFKC').toLowerCase();
   const renderSearch = () => {
     const query = normalizeSearch(searchInput.value.trim());
-    const results = index.filter(post => !query || normalizeSearch([post.title, post.description, post.category, ...(post.tags || []), post.text].join(' ')).includes(query));
+    const results = window.KOUDAI_SEARCH_INDEX.filter(post => !query || normalizeSearch([post.title, post.description, post.category, ...(post.tags || []), post.text].join(' ')).includes(query));
     searchResults.innerHTML = results.map(post => {
       const video = post.type === 'youtube' && /^[\w-]{11}$/.test(post.id);
       const href = video ? `https://www.youtube.com/watch?v=${post.id}` : `/blog/${encodeURIComponent(post.slug)}/`;
@@ -39,57 +38,6 @@ if (searchInput && searchResults && index) {
   searchInput.addEventListener('input', renderSearch);
   searchForm?.addEventListener('submit', event => { event.preventDefault(); renderSearch(); });
   renderSearch();
-}
-}
-initializeSearch(document, window.KOUDAI_SEARCH_INDEX);
-
-if (typeof HTMLDialogElement !== 'undefined') {
-  const dialog = document.createElement('dialog');
-  dialog.className = 'search-dialog';
-  dialog.setAttribute('aria-labelledby', 'search-dialog-title');
-  dialog.innerHTML = `<div class="search-dialog-heading"><h2 id="search-dialog-title">これまでの記事・動画を検索</h2><button type="button" class="search-dialog-close" aria-label="検索を閉じる">閉じる ×</button></div><form class="search-form" data-search-form><label class="sr-only" for="modal-search-input">記事・動画を検索</label><input id="modal-search-input" data-search-input type="search" placeholder="キーワードを入力" autocomplete="off"><button type="submit">検索</button></form><p class="search-status" data-search-status role="status">読み込み中…</p><div class="search-results post-grid" data-search-results></div>`;
-  document.body.append(dialog);
-  const input = $('[data-search-input]', dialog);
-  let opener;
-  let ready = false;
-  let loading = false;
-  const close = () => dialog.close();
-  $('.search-dialog-close', dialog).addEventListener('click', close);
-  dialog.addEventListener('click', event => {
-    const rect = dialog.getBoundingClientRect();
-    if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) close();
-  });
-  dialog.addEventListener('close', () => {
-    document.body.classList.remove('search-dialog-open');
-    opener?.focus({ preventScroll: true });
-  });
-  $('[data-search-form]', dialog).addEventListener('submit', event => event.preventDefault());
-  $$('.nav-search').forEach(link => {
-    link.setAttribute('aria-haspopup', 'dialog');
-    link.addEventListener('click', async event => {
-      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      opener = link;
-      nav?.classList.remove('is-open');
-      menuToggle?.setAttribute('aria-expanded', 'false');
-      if (!dialog.open) dialog.showModal();
-      document.body.classList.add('search-dialog-open');
-      input.focus({ preventScroll: true });
-      if (ready || loading) return;
-      loading = true;
-      $('[data-search-status]', dialog).textContent = '読み込み中…';
-      try {
-        const response = await fetch('/assets/search-index.json', { cache: 'no-store' });
-        if (!response.ok) throw new Error('Search data unavailable');
-        const index = await response.json();
-        if (!Array.isArray(index)) throw new Error('Invalid search data');
-        initializeSearch(dialog, index);
-        ready = true;
-      } catch {
-        $('[data-search-status]', dialog).textContent = '読み込めませんでした。一度閉じて、もう一度お試しください。';
-      } finally { loading = false; }
-    });
-  });
 }
 
 const categoryParam = new URLSearchParams(window.location.search).get('category');
@@ -118,3 +66,4 @@ document.querySelectorAll('.video-section').forEach(section => {
   update();
 
 });
+
