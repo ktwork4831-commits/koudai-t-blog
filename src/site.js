@@ -22,11 +22,18 @@ const searchForm = $('#search-form');
 const searchResults = $('#search-results');
 const searchStatus = $('#search-status');
 if (searchInput && searchResults && window.KOUDAI_SEARCH_INDEX) {
+  const escapeSearch = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+  const normalizeSearch = value => String(value).normalize('NFKC').toLowerCase();
   const renderSearch = () => {
-    const query = searchInput.value.trim().toLowerCase();
-    const results = window.KOUDAI_SEARCH_INDEX.filter(post => !query || [post.title, post.description, post.category, ...(post.tags || []), post.text].join(' ').toLowerCase().includes(query));
-    searchResults.innerHTML = results.map(post => `<article class="post-card reveal is-visible"><a class="post-card-image" href="/blog/${post.slug}/"><img src="${post.thumbnail}" alt="${post.title}" loading="lazy"><span class="image-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a><div class="post-card-body"><div class="post-meta"><span>${post.category}</span><time>${post.date.replaceAll('-', '.')}</time></div><h3><a href="/blog/${post.slug}/">${post.title}</a></h3><p>${post.description}</p><div class="tag-row">${(post.tags || []).slice(0, 3).map(tag => `<span>#${tag}</span>`).join('')}</div></div></article>`).join('');
-    searchStatus.textContent = query ? `${results.length}件の記事が見つかりました。` : `${results.length}件の記事を検索できます。`;
+    const query = normalizeSearch(searchInput.value.trim());
+    const results = window.KOUDAI_SEARCH_INDEX.filter(post => !query || normalizeSearch([post.title, post.description, post.category, ...(post.tags || []), post.text].join(' ')).includes(query));
+    searchResults.innerHTML = results.map(post => {
+      const video = post.type === 'youtube' && /^[\w-]{11}$/.test(post.id);
+      const href = video ? `https://www.youtube.com/watch?v=${post.id}` : `/blog/${encodeURIComponent(post.slug)}/`;
+      const external = video ? ' target="_blank" rel="noopener noreferrer"' : '';
+      return `<article class="post-card reveal is-visible"><a class="post-card-image" href="${href}"${external}><img src="${escapeSearch(post.thumbnail)}" alt="${escapeSearch(post.title)}" loading="lazy"></a><div class="post-card-body"><div class="post-meta"><span>${video ? 'YouTube' : escapeSearch(post.category)}</span><time>${escapeSearch(post.date?.replaceAll('-', '.'))}</time></div><h3><a href="${href}"${external}>${escapeSearch(post.title)}</a></h3><p>${escapeSearch(post.description)}</p><div class="tag-row">${(post.tags || []).slice(0, 3).map(tag => `<span>#${escapeSearch(tag)}</span>`).join('')}</div></div></article>`;
+    }).join('');
+    searchStatus.textContent = query ? `${results.length}件の記事・動画が見つかりました。` : `${results.length}件の記事・動画を検索できます（動画は取得済みのタイトルが対象です）。`;
   };
   searchInput.addEventListener('input', renderSearch);
   searchForm?.addEventListener('submit', event => { event.preventDefault(); renderSearch(); });
