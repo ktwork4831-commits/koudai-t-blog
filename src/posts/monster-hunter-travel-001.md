@@ -1,5 +1,5 @@
 ---
-title: "旅の途中でモンハングッズの展示に遭遇。アセンダンス楽しみだ"
+title: "旅の途中"
 slug: monster-hunter-travel-001
 date: 2026-11-02
 category: "日常"
