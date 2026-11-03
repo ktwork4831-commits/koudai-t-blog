@@ -115,7 +115,7 @@ h2 em { color: var(--orange); font-style: normal; }
 .video-player span { position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); color:white; background:#f60; border-radius:10px; padding:12px 22px; }
 .video-card h3 { font-size:15px; line-height:1.6; margin:18px 20px 12px; }
 .video-card time { display:block; margin:0 20px; color:var(--muted); font:11px 'DM Mono',monospace; }
-@media(max-width:800px) { .video-track { grid-template-rows:none; grid-auto-flow:row; grid-auto-columns:auto; grid-template-columns:1fr; gap:16px; } }
+@media(max-width:800px) { .video-controls { display:none; } .video-track { grid-template-rows:none; grid-auto-flow:row; grid-auto-columns:auto; grid-template-columns:1fr; gap:16px; } }
 .back-to-top { display:inline-flex; align-items:center; gap:16px; min-height:44px; padding:8px 14px; border:1px solid var(--line); border-radius:24px; font-size:12px; }
 .back-to-top span { color:var(--orange); font-size:20px; }
 .back-to-top:hover { border-color:var(--orange); background:var(--surface); }
